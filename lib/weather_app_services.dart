@@ -24,5 +24,6 @@ class WeatherAppServices {
       debugPrint("error in the api call ${e.toString()}");
       return null;
     }
+    return null;
   }
 }
