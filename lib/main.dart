@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_weather_app/weather_app_modal.dart';
+import 'package:flutter_weather_app/weather_app_services.dart';
+import 'package:flutter_weather_app/weather_app_ui.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,7 +33,8 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const WeatherHomePage(),
+      // const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -105,18 +109,22 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            Text('$_counter', style: Theme.of(context).textTheme.headlineMedium),
+            FilledButton(
+              onPressed: () async {
+                WeatherAppModal? weatherReport = await WeatherAppServices.makeApiCall("Vijayawada");
+                if (weatherReport == null) {
+                  debugPrint("City Not found");
+                } else {
+                  debugPrint(weatherReport.temperature.toString());
+                }
+              },
+              child: Text("sample getting data"),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      floatingActionButton: FloatingActionButton(onPressed: _incrementCounter, tooltip: 'Increment', child: const Icon(Icons.add)),
     );
   }
 }
